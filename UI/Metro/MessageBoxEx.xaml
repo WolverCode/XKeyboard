@@ -1,0 +1,20 @@
+﻿<Window x:Class="XKeyboard.UI.Metro.MessageBoxEx"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:XKeyboard.UI.Metro"
+        mc:Ignorable="d" MinHeight="144.651" MinWidth="414.155"
+        Title="MessageBoxEx" Height="152.272" Width="396.747" WindowStyle="None" AllowsTransparency="True" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" SizeToContent="WidthAndHeight">
+    <Grid ScrollViewer.CanContentScroll="True">
+        <Label x:Name="lblTitle" Content="Important Message" Margin="55,10,30.4,0" VerticalAlignment="Top" RenderTransformOrigin="0.512,-0.328" Height="40" VerticalContentAlignment="Center" FontSize="20" FontWeight="Bold"/>
+        <TextBlock x:Name="txtDescription" Margin="10,50,10,35.8" TextWrapping="Wrap" Text="A quick brown fox jumps over the lazy dA quick brown fox jumps over the lazy dog.A quick brown fox jumps over the lazy dog.A quick brown fox jumps over the lazy dog.A quick brown fox jumps over the lazy dog.A quick brown fox jumps over the lazy dog.og." Foreground="Black"/>
+        <Button x:Name="btnNo"  Click="btn_Click" Content="NO" HorizontalAlignment="Left" Margin="10,0,0,9.8" Width="75" Height="19" VerticalAlignment="Bottom"/>
+        <Button x:Name="btnRetry"  Click="btn_Click" Content="RETRY" HorizontalAlignment="Left" Margin="90,0,0,9.8" Width="75" Height="19" VerticalAlignment="Bottom"/>
+        <Button x:Name="btnAbort"  Click="btn_Click" Content="ABORT" Margin="0,0,169.4,9.8" Height="19" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="79"/>
+        <Button x:Name="btnIgnoreCancel" Click="btn_Click" Content="IGNORE/CANCEL" Margin="0,0,89.4,9.8" Height="19" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75"/>
+        <Button x:Name="btnYesOk" Content="OK/YES" HorizontalAlignment="Right" Margin="0,0,9.4,9.8" Width="75" Height="19" VerticalAlignment="Bottom" Click="btn_Click"/>
+        <Button x:Name="btnCancel"  Click="btn_Click" Content="X" Margin="0,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="25" Height="25"/>
+        <Image x:Name="imgIcon" HorizontalAlignment="Left" Height="40" Margin="10,10,0,0" VerticalAlignment="Top" Width="40"/>
+    </Grid>
+</Window>
