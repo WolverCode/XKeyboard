@@ -7,3 +7,7 @@ This lets the application change the keys being sent and act as a 'bridge' betwe
 XKeyboard uses dictionary based key-sets (called XFont s) which defines the custom characters for each key on the keyboard. 
 When the user persses a key, the program looks for the modified character of the pressed key and forwards it to the windows. 
 
+# Changes (v1.3)
+Added 2 new modes: 
+  Auto Capitalize First Letter of each word you type.
+  Alter Capitalization: used to alternate caps on each button press. 
