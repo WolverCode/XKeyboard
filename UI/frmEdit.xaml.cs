@@ -45,15 +45,15 @@ namespace XKeyboard.UI
         {
             InitializeComponent();
             //Decide which icon to use for form depends on current keyboard state. 
-            switch (Program.kManager.KeyboardState)
+            switch (Program.kManager.Mode)
             {
-                case KeyboardState.Enabled:
+                case KeyboardMode.Enabled:
                     this.Icon = Properties.Resources.x256_enabled.GetImageSrc();
                     break;
-                case KeyboardState.Disabled:
+                case KeyboardMode.Disabled:
                     this.Icon = Properties.Resources.x256_disabled.GetImageSrc();
                     break;
-                case KeyboardState.Intercept:
+                case KeyboardMode.Intercept:
                     this.Icon = Properties.Resources.x256_intercept.GetImageSrc();
                     break;
             }

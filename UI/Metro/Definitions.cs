@@ -1,11 +1,11 @@
 ﻿/// File: Metro.Definitions.cs
 /// Purpose: Defines the metro message box parameters. 
-/// Version: 1.2 
-/// Date: 23, Feb, 2019
+/// Version: 1.3
+/// Date: 12/20/2019
 
 /* 
-Copyright (c) 2019, All rights are reserved by Team WolverCode
-Visit: https://www.wolvercode.com
+Copyright (c) 2019, All rights are reserved by WolverCode
+https://www.wolvercode.com
 
 This program is licensed under the Apache License, Version 2.0 (the "License");
 you may not download, install or use this program except in compliance with the License.

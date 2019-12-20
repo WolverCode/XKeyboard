@@ -1,15 +1,12 @@
 ﻿/// File: MessageBoxEx.xaml.cs
 /// Purpose: Defines the MessageBoxEx UI handler. 
-/// Version: 1.2
-/// Date Modified: 11/24/2019
+/// Version: 1.3
+/// Date Modified: 12/20/2019
 /// 
-/// Changes
-/// =======
-/// Code Clean
 
 /* 
-Copyright (c) 2019, All rights are reserved by Team WolverCode
-Visit: https://www.wolvercode.com
+Copyright (c) 2019, All rights are reserved by WolverCode
+https://www.wolvercode.com
 
 This program is licensed under the Apache License, Version 2.0 (the "License");
 you may not download, install or use this program except in compliance with the License.

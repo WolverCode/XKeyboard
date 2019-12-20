@@ -1,7 +1,7 @@
 ﻿/// File: KManager.cs
 /// Purpose: Defines the functions used to manage low level keyboard procedure and hooks. 
-/// Version: 1.2
-/// Date Modified: 11/24/2019
+/// Version: 1.3
+/// Date Modified: 12/20/2019
 
 /* 
 Copyright (c) 2019, All rights are reserved by WolverCode
@@ -49,13 +49,13 @@ namespace XKeyboard.Core
 
         private Native.LowLevelKeyboardProc _proc;
         private IntPtr _hookID = IntPtr.Zero;       //Stores the keyboard hook id
-        private KeyboardState _keyboardState;       //Stores the current keyboard state
+        private KeyboardMode _keyboardState;       //Stores the current keyboard state
         private bool iSent = false;                 //Indicates that the last key was sent by this application it self. 
 
         /// <summary>
         /// Gets or Sets the current keyboard state (mode)
         /// </summary>
-        public KeyboardState KeyboardState
+        public KeyboardMode Mode
         {
             get
             {
@@ -84,7 +84,7 @@ namespace XKeyboard.Core
         {
             //Determine which key is pressed and control the keyboard 
             //Decide wether to enable or disable keyboard (i.e. forward keys or intercept or block)
-           if (this.KeyboardState == KeyboardState.Disabled)
+           if (this.Mode == KeyboardMode.Disabled)
             {
                 if (this.KeyBlock != null)
                     this.KeyBlock.Invoke(@params.keyCode, this);
@@ -94,7 +94,7 @@ namespace XKeyboard.Core
             }
             //Check if any of modifier keys are pressed. 
             //Check if the keyboard is set to forward keys, or if the key pressed was not the standard key for replacement.
-            if (this.KeyboardState == KeyboardState.Enabled || !IsStandardKey(@params.keyCode) || IsModifiersDown())
+            if (this.Mode == KeyboardMode.Enabled || !IsStandardKey(@params.keyCode) || IsModifiersDown())
             {
                 if (this.KeyForward != null)
                     this.KeyForward.Invoke(@params.keyCode, this);

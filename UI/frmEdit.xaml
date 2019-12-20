@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:XKeyboard.UI"
         mc:Ignorable="d"
-        Title="XKeyboard - Edit" Height="416.515" Width="481.955" Background="{DynamicResource darkButtonBackClick}" >
+        Title="XKeyboard - Edit" Height="416.515" Width="481.955" Background="{StaticResource darkButtonBackClick}" >
     <Grid>
         <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="10,0,0,4.8" VerticalAlignment="Bottom" Width="75" ToolTip="Save the current font set" Click="frmButtonClick"/>
         <Button x:Name="btnSaveAs" Content="Save As" HorizontalAlignment="Left" Margin="90,0,0,4.8" Width="75" ToolTip="Export current font set to a new file" Height="19" VerticalAlignment="Bottom" Click="frmButtonClick"/>

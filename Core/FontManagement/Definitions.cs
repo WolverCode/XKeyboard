@@ -1,7 +1,7 @@
 ﻿/// File: FontManagement.Definitions.cs
 /// Purpose: Defines the FONT class database and it structure of custom font files.
-/// Version: 1.2
-/// Date Modified: 11/24/2019
+/// Version: 1.3
+/// Date Modified: 12/20/2019
 
 /* 
 Copyright (c) 2019, All rights are reserved by WolverCode
@@ -168,8 +168,8 @@ namespace XKeyboard.Core.FontManagement
             charSet = keys;
             isInitialized = false;
             //Save keyboard state and disable keyboard temp.
-            var kbState = keyboardManager.KeyboardState;
-            keyboardManager.KeyboardState = KeyboardState.Disabled; //Disable the keyboard and key interception 
+            var kbState = keyboardManager.Mode;
+            keyboardManager.Mode = KeyboardMode.Disabled; //Disable the keyboard and key interception 
             Logger.Log("XFont.Init(): Keyboard lock was activated to prevent miss-behaviour.");
             char lastKey = ' ';
             int lastKeyCode = 0;
@@ -196,7 +196,7 @@ namespace XKeyboard.Core.FontManagement
                 System.Windows.Forms.SendKeys.SendWait(c.ToString());
             }
             Logger.Log("XFont.Init(): Keys noted, unlocking keyboard...");
-            keyboardManager.KeyboardState = kbState;
+            keyboardManager.Mode = kbState;
             isInitialized = true;
             keyboardManager.KeyBlock -= act;
         }

@@ -1,18 +1,13 @@
 ﻿/// File: frmAbout.cs
 /// Purpose: Defines the about form
-/// Version: 1.2
-/// Date Modified: 11/24/2019
-/// 
-/// Changes
-/// =======
-/// Changed version info.
-/// Added links
+/// Version: 1.3
+/// Date Modified: 12/20/2019
 /// 
 
 
 /* 
-Copyright (c) 2019, All rights are reserved by Team WolverCode
-Visit: https://www.wolvercode.com
+Copyright (c) 2019, All rights are reserved by WolverCode
+https://www.wolvercode.com
 
 This program is licensed under the Apache License, Version 2.0 (the "License");
 you may not download, install or use this program except in compliance with the License.
@@ -65,19 +60,19 @@ namespace XKeyboard.UI
         {
             InitializeComponent();
             imgWC.Source = Properties.Resources.LOGO2_W.GetImageSrc();
-            switch (Program.kManager.KeyboardState)
+            switch (Program.kManager.Mode)
             {
-                case KeyboardState.Enabled:
+                case KeyboardMode.Enabled:
                     this.Icon = Properties.Resources.x256_enabled.GetImageSrc();
                     break;
-                case KeyboardState.Disabled:
+                case KeyboardMode.Disabled:
                     this.Icon = Properties.Resources.x256_disabled.GetImageSrc();
                     break;
-                case KeyboardState.Intercept:
+                case KeyboardMode.Intercept:
                     this.Icon = Properties.Resources.x256_intercept.GetImageSrc();
                     break;
             }
-            lblVersion.Content = "Version: " + System.Windows.Forms.Application.ProductVersion + "\r\nDate Release: 25/11/2019";
+            lblVersion.Content = "Version: " + System.Windows.Forms.Application.ProductVersion + "\r\nDate Release: 12/20/2019";
             lblCopyright.Text = @"THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 FOR MORE TOOLS AND APPS, VISIT OUR WEBSITE OR CHECK OUT OUR FACEBOOK PAGE!
@@ -86,15 +81,15 @@ EMAIL: support@wolvercode.com
             imgFB.Source = Properties.Resources.like.GetImageSrc();
             imgWWW.Source = Properties.Resources.mozilla.GetImageSrc();
             //this.Background = new System.Windows.Media.ImageBrush(Properties.Resources.LOGO.GetImageSrc());
-            switch (Program.kManager.KeyboardState)
+            switch (Program.kManager.Mode)
             {
-                case Core.KeyboardState.Enabled:
+                case Core.KeyboardMode.Enabled:
                     imgProg.Source = Properties.Resources.xk256_enabled.GetImageSrc();
                     break;
-                case Core.KeyboardState.Disabled:
+                case Core.KeyboardMode.Disabled:
                     imgProg.Source = Properties.Resources.xk256_disabled.GetImageSrc();
                     break;
-                case Core.KeyboardState.Intercept:
+                case Core.KeyboardMode.Intercept:
                     imgProg.Source = Properties.Resources.xk256_intercepting.GetImageSrc();
                     break;
             }

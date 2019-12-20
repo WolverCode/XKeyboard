@@ -1,7 +1,7 @@
 ﻿/// File: Program.cs
-/// Purpose: Defines static program functionality. 
-/// Version: 1.2
-/// Date Modified: 11 - 24 - 2019
+/// Purpose: Defines Program Entry Point
+/// Version: 1.3
+/// Date Modified: 12/20/2019
 /// 
 /// Changes
 /// =======
@@ -45,6 +45,9 @@ namespace XKeyboard
         public static KManager kManager;
         // ConfigManager is used save and retrieve application configuration (i.e. last active font, keyboard state, etc.)
         public static ConfigManager cManager;
+        //Stores last key state. In AutoCap mode, this is true when user presses SPACE and becomes false after one key press. In ReverseCap mode, this is reverse of AutoCap
+        //In AlterCap mode, this flag keeps swapping. 
+        static bool _toCap = false; 
         /// <summary>
         /// Initializes the Font, Keyboard, Config and Notification manager. 
         /// </summary>
@@ -85,6 +88,7 @@ namespace XKeyboard
             kManager.Register();
             //Subscribe to input event from KManager. 
             kManager.KeyIntercept += Key_Intercepted;
+            kManager.KeyForward += KManager_KeyForward;
             //Load settings.
             Log("Loading last configuration...");
             cManager.AutoSave = cManager.Get<bool>(ConfigKeys.Autosave);
@@ -96,11 +100,18 @@ namespace XKeyboard
                 fManager.CurrentFont = XFont.Load(lastFont);
             }
             //Set keyboard state to last recent state 
-            kManager.KeyboardState = cManager.Get<KeyboardState>(ConfigKeys.KeyboardState);
+            kManager.Mode = cManager.Get<KeyboardMode>(ConfigKeys.KeyboardState);
             //Set beep on keyboard block to last setting.
             kManager.Beep = cManager.Get<bool>(ConfigKeys.InputBlockBeep);
             
         }
+
+        private static void KManager_KeyForward(int keyCode, KManager km)
+        {
+            if (keyCode == 13   && km.Mode == KeyboardMode.AutoCapitalization)
+                _toCap = true;
+        }
+
         /// <summary>
         /// Saves the current settings in application configuration file using ConfigManager.
         /// </summary>
@@ -108,7 +119,7 @@ namespace XKeyboard
         {
             cManager.Set(ConfigKeys.Autosave, cManager.AutoSave);
             cManager.Set(ConfigKeys.InputBlockBeep, kManager?.Beep);
-            cManager.Set(ConfigKeys.KeyboardState, kManager?.KeyboardState);
+            cManager.Set(ConfigKeys.KeyboardState, kManager?.Mode);
             cManager.Set(ConfigKeys.LastFont, fManager.CurrentFont?.File());
             cManager.Save();
         }
@@ -120,17 +131,36 @@ namespace XKeyboard
         private static void Key_Intercepted(int keyCode, KManager km)
         {
             //Check if current font is undefined, if so: switch keyboard mode and return. 
-            if(fManager?.CurrentFont == null)
+            if(fManager?.CurrentFont == null && km.Mode == KeyboardMode.Intercept)
             {
-                kManager.KeyboardState = KeyboardState.Enabled;
+                kManager.Mode = KeyboardMode.Enabled;
                 Logger.Write("KManager switched the keyboard mode because no font set was specified for key interception. ", MessagePriority.Mid, MessageKind.Info);
                 return;
             }
             //Filter the key. I.e. convert 'A' to 'a' if SHIFT or CAPSLOCK isn't toggled and vice versa. 
             var fKey = FilterKey((char)keyCode);
-
+            if (_toCap) fKey = char.ToUpper(fKey);
+            //Apply special mode here. 
+            switch (km.Mode)
+            {
+                case KeyboardMode.AutoCapitalization:
+                    if (fKey == ' ')
+                        _toCap = true;
+                    else
+                        _toCap = false;
+                    break;
+                case KeyboardMode.AlterCapitalization:
+                    if (fKey != ' ')
+                        _toCap = !_toCap;
+                    break;
+                default:
+                    break;
+            }
             //Get the associated custom key with the keycode and forward the custom key (character)
-            kManager.SendKey(fManager.CurrentFont.GetValueSafe(fKey));
+            if (fManager.CurrentFont == null)
+                kManager.SendKey(new XKey(-1, fKey, fKey.ToString()));
+            else
+                kManager.SendKey(fManager.CurrentFont.GetValueSafe(fKey));
         }
         static char FilterKey(char key)
         {

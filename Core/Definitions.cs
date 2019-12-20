@@ -1,7 +1,11 @@
 ﻿/// File: Core.Definitions.cs
 /// Purpose: Defines the keyboard manager parts. 
-/// Version: 1.2
-/// Date Modified: 11/24/2019
+/// Version: 1.3
+/// Date Modified: 12/20/2019
+
+/// Changes
+/// Changed KeyboardState to KeyboardModes
+/// Added 2 new modes.
 
 /* 
 Copyright (c) 2019, All rights are reserved by WolverCode
@@ -22,9 +26,9 @@ using System;
 namespace XKeyboard.Core
 {
     /// <summary>
-    /// Defines the keyboard states or modes to use
+    /// Defines the keyboard states or modes to use.
     /// </summary>
-    public enum KeyboardState
+    public enum KeyboardMode
     {
         /// <summary>
         /// Indicates that all the keys must be forwarded.
@@ -37,7 +41,15 @@ namespace XKeyboard.Core
         /// <summary>
         /// Indicates that all the keys must be intercepted by the program and changed. 
         /// </summary>
-        Intercept 
+        Intercept,
+        /// <summary>
+        /// This mode is used to automatically capitalize first letter of each word. 
+        /// </summary>
+        AutoCapitalization,
+        /// <summary>
+        /// This mode is used to alter the normal capitalization. I.e. HeLlOw WoRlD. Notice, each letter of first word is always capital.
+        /// </summary>
+        AlterCapitalization
     }
     /// <summary>
     /// Defines the hook parameters

@@ -1,10 +1,11 @@
 ﻿/// File: Core.NotificationManager.cs
 /// Purpose: Defines the NotificationManager used to control notification icon and application interface
-/// Version: 1.2
-/// Date Modified: 11/24/2019
+/// Version: 1.3
+/// Date Modified: 12/20/2019
 /// 
 /// Changes
 /// =======
+/// Added new mode items. 
 /// Removed function names from Log() calls. 
 /// Fix: NotifyIcon wasn't updating after font change. 
 /// 
@@ -91,57 +92,70 @@ namespace XKeyboard.Core
             var itemAbout = new MenuItem("About");
             //Keyboard settings menu item
             var itemKeyboard = new MenuItem("XKeyboard");
-            var itemKeyboardEnabled = new MenuItem("Enabled") { Name = "itemKeyboardEnabled" };
+            var itemKeyboardEnabled = new MenuItem("Normal") { Name = "itemKeyboardEnabled" };
             var itemKeyboardDisabled = new MenuItem("Disabled") { Name = "itemKeyboardDisabled" };
+            var itemKeyboardAutoCaps = new MenuItem("Auto Capitalize First Letter") { Name = "itemKeyboardAutoCaps" };
+            var itemKeyboardAlterCaps = new MenuItem("AlTeRnAtE CaPiTaLiZaTiOn") { Name = "itemKeyboardAlterCaps" };
             //var itemKeyboardIntercept = new MenuItem("Intercept") { Name = "itemKeyboardIntercept" };
             var itemFontsManage = new MenuItem("Edit Fonts");
             var itemFontsExplore = new MenuItem("Open Folder");
-            
+
             //View logs menu item.
             var itemLogs = new MenuItem("View Logs");
-            //Extras menu item.
-
             //Occures when any of application setting is changed. 
             Action settingsChanged = delegate
-            {
-                Log("Settings change detected.");
-                if (Program.kManager == null) return;
+        {
+            if (Program.kManager == null) return;
                 //Check keyboard state and set the icon accordingly.
-                switch (Program.kManager.KeyboardState)
-                {
-                    case KeyboardState.Enabled:
-                        itemKeyboardEnabled.Checked = true;
+                switch (Program.kManager.Mode)
+            {
+                case KeyboardMode.Enabled:
+                    itemKeyboardEnabled.Checked = true;     //Checked
                         itemKeyboardDisabled.Checked = false;
-                        // itemKeyboardIntercept.Checked = false;
-                        NotifyIcon.Icon = Properties.Resources.x256_enabled;
-                        break;
-                    case KeyboardState.Disabled:
-                        itemKeyboardEnabled.Checked = false;
-                        itemKeyboardDisabled.Checked = true;
-                        // itemKeyboardIntercept.Checked = false;
-                        NotifyIcon.Icon = Properties.Resources.x256_disabled;
-                        break;
-                    case KeyboardState.Intercept:
-                        itemKeyboardEnabled.Checked = false;
-                        itemKeyboardDisabled.Checked = false;
-                        // itemKeyboardIntercept.Checked = true;
-                        NotifyIcon.Icon = Properties.Resources.x256_intercept;
-                        break;
-                    default:
-                        break;
-                }
-                NotifyIcon.Visible = false;
-                NotifyIcon.Text = "XKeyboard - " +
-                ((Program.kManager.KeyboardState == KeyboardState.Intercept) ? "Intercepting" : (Program.kManager.KeyboardState == KeyboardState.Enabled) ? "Enabled" : "Disabled");
-                itemSettingBeepInputBlocked.Checked = Program.kManager.Beep;
-                itemSettingClearLogs.Enabled = System.IO.File.Exists("logs.txt");
-                itemSettingStartup.Checked = Helper.IsStartup();
-                NotifyIcon.Visible = true;
-            };
+                    itemKeyboardAlterCaps.Checked = false;
+                    itemKeyboardAutoCaps.Checked = false;
+                    NotifyIcon.Icon = Properties.Resources.x256_enabled;
+                    break;
+                case KeyboardMode.Disabled:
+                    itemKeyboardEnabled.Checked = false;
+                    itemKeyboardDisabled.Checked = true;    //Checked
+                        itemKeyboardAlterCaps.Checked = false;
+                    itemKeyboardAutoCaps.Checked = false;
+                    NotifyIcon.Icon = Properties.Resources.x256_disabled;
+                    break;
+                case KeyboardMode.Intercept:
+                    itemKeyboardEnabled.Checked = false;
+                    itemKeyboardDisabled.Checked = false;
+                    itemKeyboardAlterCaps.Checked = false;
+                    itemKeyboardAutoCaps.Checked = false;
+                    NotifyIcon.Icon = Properties.Resources.x256_intercept;
+                    break;
+                case KeyboardMode.AlterCapitalization:
+                    itemKeyboardEnabled.Checked = false;
+                    itemKeyboardDisabled.Checked = false;
+                    itemKeyboardAlterCaps.Checked = true;   //Checked
+                        itemKeyboardAutoCaps.Checked = false;
+                    break;
+                case KeyboardMode.AutoCapitalization:
+                    itemKeyboardEnabled.Checked = false;
+                    itemKeyboardDisabled.Checked = false;
+                    itemKeyboardAlterCaps.Checked = false;
+                    itemKeyboardAutoCaps.Checked = true;    //Checked
+                    break;
+            }
+            NotifyIcon.Visible = false;
+            NotifyIcon.Text = "XKeyboard - " +
+            ((Program.kManager.Mode == KeyboardMode.Intercept) ? "Intercepting" : (Program.kManager.Mode == KeyboardMode.Disabled) ? "Disabled" : "Normal");
+            itemSettingBeepInputBlocked.Checked = Program.kManager.Beep;
+            itemSettingClearLogs.Enabled = System.IO.File.Exists("logs.txt");
+            itemSettingStartup.Checked = Helper.IsStartup();
+            NotifyIcon.Visible = true;
+        };
             //Assign ContextMenu to NotifyIcon and add items
-            NotifyIcon.ContextMenu = new ContextMenu(new MenuItem[] 
+            NotifyIcon.ContextMenu = new ContextMenu(new MenuItem[]
             {
                 itemKeyboard,
+                //itemExtra,
                 itemSetting,
                 itemLogs,
                 itemAbout,
@@ -151,12 +165,16 @@ namespace XKeyboard.Core
             //Occures when context menu is being showed. 
             NotifyIcon.ContextMenu.Popup += (xx, ee) =>
             {
-//Menu Items are added here. 
+                //Menu Items for fonts are laoded here. 
                 #region MenuPopup
                 itemKeyboard.MenuItems.Clear();
-                itemKeyboard.MenuItems.Add(new MenuItem("--XKEYBOARD--") { Enabled = false });
+                itemKeyboard.MenuItems.Add(new MenuItem("--MODE--") { Enabled = false });
                 itemKeyboard.MenuItems.Add(itemKeyboardDisabled);
                 itemKeyboard.MenuItems.Add(itemKeyboardEnabled);
+                itemKeyboard.MenuItems.AddRange(new MenuItem[] {
+                    itemKeyboardAutoCaps,
+                    itemKeyboardAlterCaps,
+                });
                 itemKeyboard.MenuItems.Add(new MenuItem("MANAGE".Fill("--XKEYBOARD--".Length, '-')) { Enabled = false });
                 itemKeyboard.MenuItems.Add(itemFontsManage);
                 itemKeyboard.MenuItems.Add(itemFontsExplore);
@@ -170,7 +188,7 @@ namespace XKeyboard.Core
                     {
                         mi.Checked = true;
                         Program.fManager.CurrentFont = i;
-                        Program.kManager.KeyboardState = KeyboardState.Intercept;
+                        Program.kManager.Mode = KeyboardMode.Intercept;
                     };
                     //Check the current selected font.
                     if (i.File() == Program.fManager?.CurrentFont?.File())
@@ -230,11 +248,18 @@ namespace XKeyboard.Core
                         break;
                     case nameof(itemKeyboardDisabled):
                         //Disable keyboard
-                        Program.kManager.KeyboardState = KeyboardState.Disabled;
+                        Program.kManager.Mode = KeyboardMode.Disabled;
                         break;
                     case nameof(itemKeyboardEnabled):
                         //Enable keyboard
-                        Program.kManager.KeyboardState = KeyboardState.Enabled;
+                        Program.kManager.Mode = KeyboardMode.Enabled;
+                        break;
+                    case nameof(itemKeyboardAlterCaps):
+                        //Change mode to AlterCap
+                        Program.kManager.Mode = KeyboardMode.AlterCapitalization;
+                        break;
+                    case nameof(itemKeyboardAutoCaps):
+                        Program.kManager.Mode = KeyboardMode.AutoCapitalization;
                         break;
                 }
                 settingsChanged();
@@ -242,6 +267,8 @@ namespace XKeyboard.Core
             });
             itemKeyboardDisabled.Click += itemKeyboardClick;
             itemKeyboardEnabled.Click += itemKeyboardClick;
+            itemKeyboardAlterCaps.Click += itemKeyboardClick;
+            itemKeyboardAutoCaps.Click += itemKeyboardClick;
             //Explore Font item menu clicked
             itemFontsExplore.Click += delegate
             {

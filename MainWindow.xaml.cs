@@ -1,11 +1,12 @@
 ﻿/// File: MainWindow.cs
 /// Purpose: Defines the Font Manager window
-/// Version: 1.0.0.1 (beta)
-/// Date: 23, Feb, '19. 
+/// Version: 1.3
+/// Date: 12/20/2019 
 
 /* 
-Copyright (c) 2019, All rights are reserved by AB, 70 Technologies. 
-https://www.Tech70.cf
+Copyright (c) 2019, All rights are reserved by WolverCode
+https://www.wolvercode.com
+
 This program is licensed under the Apache License, Version 2.0 (the "License");
 you may not download, install or use this program except in compliance with the License.
 You may obtain a copy of the License at
@@ -34,15 +35,15 @@ namespace XKeyboard
         {
             InitializeComponent();
             //Set the form's ICON according to the current keyboard state. 
-            switch (Program.kManager.KeyboardState)
+            switch (Program.kManager.Mode)
             {
-                case KeyboardState.Enabled:
+                case KeyboardMode.Enabled:
                     this.Icon = Properties.Resources.x256_enabled.GetImageSrc();
                     break;
-                case KeyboardState.Disabled:
+                case KeyboardMode.Disabled:
                     this.Icon = Properties.Resources.x256_disabled.GetImageSrc();
                     break;
-                case KeyboardState.Intercept:
+                case KeyboardMode.Intercept:
                     this.Icon = Properties.Resources.x256_intercept.GetImageSrc();
                     break;
             }
@@ -110,20 +111,20 @@ namespace XKeyboard
             //Create new instance of Font Editor form. 
             var f = new frmEdit(XFont.Load(((XItem)listFonts.SelectedItem).FileName), false);
             //Store current keyboard state
-            var o = Program.kManager.KeyboardState;
-            if (o != KeyboardState.Enabled) //If current state is enabled, temporarily disable it. 
+            var o = Program.kManager.Mode;
+            if (o != KeyboardMode.Enabled) //If current state is enabled, temporarily disable it. 
             {
                 Logger.Notify("KManager temporarily switched the keyboard mode for the application to work correctly. ", MessageKind.Info);
-                Program.kManager.KeyboardState = KeyboardState.Enabled;
+                Program.kManager.Mode = KeyboardMode.Enabled;
                 /////NOTE/////
                     /// This application cannot recieve any keyboard input as long as the keyboardmode is set to intercept!
                 ///////////////
             }
             f.ShowDialog();
             //Restore keyboard state. 
-            if (o != KeyboardState.Enabled)
-                Logger.Notify("KManager restored the keyboard mode to " + (o == KeyboardState.Intercept ? "intercept keys." : " disabled. "), MessageKind.Info);
-            Program.kManager.KeyboardState = o;
+            if (o != KeyboardMode.Enabled)
+                Logger.Notify("KManager restored the keyboard mode to " + (o == KeyboardMode.Intercept ? "intercept keys." : " disabled. "), MessageKind.Info);
+            Program.kManager.Mode = o;
             //Reload font (if specified)
             if (Program.fManager.CurrentFont != null)
                 Program.fManager.CurrentFont = XFont.Load(Program.fManager.CurrentFont.File());
@@ -149,16 +150,16 @@ namespace XKeyboard
             //Insantiate new font editor with standard charset. 
             var f = new frmEdit(new XFont("Un-named font set", "N/A", "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "), true);
             /* See comments in EditFont() */
-            var o = Program.kManager.KeyboardState;
-            if (o != KeyboardState.Enabled)
+            var o = Program.kManager.Mode;
+            if (o != KeyboardMode.Enabled)
             {
                 Logger.Notify("KManager temporarily switched the keyboard mode for the application to work correctly. ", MessageKind.Info);
-                Program.kManager.KeyboardState = KeyboardState.Enabled;
+                Program.kManager.Mode = KeyboardMode.Enabled;
             }
             f.ShowDialog();
-            if(o!= KeyboardState.Enabled)
-                Logger.Notify("KManager restored the keyboard mode to "+(o== KeyboardState.Intercept?"intercept keys.":" disabled. "), MessageKind.Info);
-            Program.kManager.KeyboardState = o;
+            if(o!= KeyboardMode.Enabled)
+                Logger.Notify("KManager restored the keyboard mode to "+(o== KeyboardMode.Intercept?"intercept keys.":" disabled. "), MessageKind.Info);
+            Program.kManager.Mode = o;
         }
     }
 }

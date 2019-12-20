@@ -1,13 +1,11 @@
 ﻿/// File: Logger.cs
 /// Purpose: Defines the logger used in this application to log various messages. 
-/// Version: 1.2
-/// Date Modified: 11 - 24 - 2019
-/// 
+/// Version: 1.3
+/// Date Modified: 12/20/2019
+
 /// Changes
 /// =======
-/// Added automatic method name lookup in Log() to avoid writing function names in Log() calls. 
-/// Added auto-delete of logs on Write() if they exceed the maximum log size. 
-/// Removed WriteHeader() function as it could be embdedded in Init()
+/// No changes. 
 /// 
 
 /* 

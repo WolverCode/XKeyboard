@@ -1,12 +1,12 @@
 ﻿<!--
     File: App.xaml
     Purpose: Defines the custom WPF controls used in the program. 
-    Version: 1.0.0.1 (beta)
-    Date: 23, Feb, 2019. 
+    Version: 1.1
+    Date: 12/20/2019 
     
 /* 
-Copyright (c) 2019, All rights are reserved by AB, The Tech Developers, PK.
-https://www.TheTechDevelopers.cf
+Copyright (c) 2019, All rights are reserved by WolverCode
+    
 This program is licensed under the Apache License, Version 2.0 (the "License");
 you may not download, install or use this program except in compliance with the License.
 You may obtain a copy of the License at
@@ -90,17 +90,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
             </Setter>
         </Style>
         
-        <!--Context Menu of NotifyIcon-->
-        <ContextMenu x:Key="mainContextMenu">
-            <MenuItem Header="Exit"/>
-            <MenuItem Header="About"/>
-            <MenuItem Header="Keyboard">
-                <MenuItem Header="Enabled"/>
-                <MenuItem Header="Disbabled"/>
-                <MenuItem Header="Intercept"/>
-            </MenuItem>
-            <MenuItem Header="Fonts" ItemsSource="{Binding FontItems}"/>
-        </ContextMenu>
+      
         
         <!--Custom Item Template For ListView-->
         <ControlTemplate x:Key="ListViewItemTemplate" TargetType="{x:Type ListViewItem}">

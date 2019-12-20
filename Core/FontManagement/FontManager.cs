@@ -1,7 +1,7 @@
 ﻿/// File: FontManager.cs
 /// Purpose: Defines the methods used to manage current font set and retrive other fonts
-/// Version: 1.2
-/// Date Modified: 11/24/2019
+/// Version: 1.3
+/// Date Modified: 12/20/2019
 
 /* 
 Copyright (c) 2019, All rights are reserved by WolverCode
